@@ -25,7 +25,7 @@ public class command implements CommandExecutor {
         Player p = (Player) sender;
         if (cmd.getName().equalsIgnoreCase("ghostlife")) {
             if (args.length <= 0) {
-                return false;
+                return true;
             }
             if (args[0].equalsIgnoreCase("reload")) {
                 //OP以外起動しないように設定
