@@ -52,9 +52,6 @@ public final class ghostlife extends JavaPlugin implements Listener {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cSELLMMSHOP&fを閉じました"));
                 }
             } else {
-                player.closeInventory();
-                Location loc = player.getLocation();
-                player.playSound(loc,Sound.ENTITY_BLAZE_SHOOT, 2, 1);
                 e.setCancelled(true);
             }
         }

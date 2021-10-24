@@ -110,8 +110,7 @@ public class command implements CommandExecutor {
             List<String> lore4 = new ArrayList<String>();
             lore4.add(ChatColor.translateAlternateColorCodes('&', "&d売却可能アイテムは"));
             lore4.add(ChatColor.translateAlternateColorCodes('&', "&3一万円&f,&3五千円&f"));
-            lore4.add(ChatColor.translateAlternateColorCodes('&', "&3二千円&f,&3千円&f,&6&l硬貨"));
-            lore4.add(ChatColor.translateAlternateColorCodes('&', "&7洞窟の欠片&f,&0&l黒曜石"));
+            lore4.add(ChatColor.translateAlternateColorCodes('&', "&3二千円&f,&3千円"));
             lore4.add(ChatColor.translateAlternateColorCodes('&', "&f圧縮小麦チケット,圧縮ポテトチケット,圧縮人参チケット"));
             lore4.add(ChatColor.translateAlternateColorCodes('&', "&f圧縮松の木チケット"));
             itemMeta4.setLore(lore4);
