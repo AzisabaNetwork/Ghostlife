@@ -1,6 +1,6 @@
 name: GhostLife
 version: ${project.version}
-main: ghostlife.ghostlife.ghostlife
+main: com.github.sirokuri_.ghostlife.ghostlife
 api-version: '1.15'
 authors: [ghost_46]
 description: LIFE plugin
