@@ -20,8 +20,6 @@ import java.util.logging.Logger;
 public final class ghostlife extends JavaPlugin implements Listener {
 
     private static final Logger log = Logger.getLogger("Minecraft");
-    public InventoryHolder holder1;
-    public InventoryHolder holder2;
     private static Economy econ = null;
 
     @Override
@@ -60,24 +58,23 @@ public final class ghostlife extends JavaPlugin implements Listener {
         if (slot == null) return;
         if (inventory == null) return;
         InventoryHolder inventoryHolder = inventory.getHolder();
-        if(inventoryHolder == holder1){
-            if (slot.getType() == Material.GREEN_STAINED_GLASS_PANE) {
-                if (slot.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&aSHOPを開く"))) {
-                    Inventory mirror = Bukkit.createInventory(holder2, 54, "§cSELLMMITEM SHOP");
-                    Location loc = player.getLocation();
-                    player.playSound(loc,Sound.BLOCK_CHEST_OPEN, 2, 1);
-                    player.openInventory(mirror);
-                }
-            }else if (slot.getType() == Material.RED_STAINED_GLASS_PANE) {
-                if (slot.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&cSHOPを閉じる"))) {
-                    player.closeInventory();
-                    Location loc = player.getLocation();
-                    player.playSound(loc, Sound.BLOCK_CHEST_CLOSE, 2, 1);
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cSELLMMSHOP&fを閉じました"));
-                }
-            } else {
-                e.setCancelled(true);
+        if(!(inventoryHolder instanceof GhostHolder)) return;
+        if (slot.getType() == Material.GREEN_STAINED_GLASS_PANE) {
+            if (slot.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&aSHOPを開く"))) {
+                Inventory mirror = Bukkit.createInventory(new GhostHolder("holder1"), 54, "§cSELLMMITEM SHOP");
+                Location loc = player.getLocation();
+                player.playSound(loc,Sound.BLOCK_CHEST_OPEN, 2, 1);
+                player.openInventory(mirror);
             }
+        }else if (slot.getType() == Material.RED_STAINED_GLASS_PANE) {
+            if (slot.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&cSHOPを閉じる"))) {
+                player.closeInventory();
+                Location loc = player.getLocation();
+                player.playSound(loc, Sound.BLOCK_CHEST_CLOSE, 2, 1);
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cSELLMMSHOP&fを閉じました"));
+            }
+        } else {
+            e.setCancelled(true);
         }
         /*if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', "&cSELLMMITEM MENU"))) {
             if (slot.getType() == Material.GREEN_STAINED_GLASS_PANE) {
@@ -104,9 +101,10 @@ public final class ghostlife extends JavaPlugin implements Listener {
     private void inventoryCloseEvent(InventoryCloseEvent e) {
         Player player = (Player) e.getPlayer();
         InventoryHolder inventoryHolder = e.getInventory().getHolder();
-        if(inventoryHolder == holder1) return;
-        if(inventoryHolder == holder2){
-            ItemStack[] contents = holder2.getInventory().getContents();
+        if(!(inventoryHolder instanceof GhostHolder)) return;
+        GhostHolder holder = (GhostHolder) inventoryHolder;
+        if(holder.tags.get(0).equals("holder1")){
+            ItemStack[] contents = holder.getInventory().getContents();
             List<String> itemDisplayNameList = new ArrayList<>();
             double totalMoney = 0;
             for (String key : getConfig().getConfigurationSection("mmitem").getKeys(false)) {
