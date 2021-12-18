@@ -88,7 +88,7 @@ public class command implements CommandExecutor {
         }
 
         if (cmd.getName().equalsIgnoreCase("sellmmgui") || cmd.getName().equalsIgnoreCase("smg")) {
-            Inventory mirror = Bukkit.createInventory(null, 9, "§cSELLMMITEM MENU");
+            Inventory mirror = Bukkit.createInventory(plugin.holder1, 9, "§cSELLMMITEM MENU");
             ItemStack menu1 = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
             ItemStack menu2 = new ItemStack(Material.RED_STAINED_GLASS_PANE);
             ItemStack menu3 = new ItemStack(Material.YELLOW_STAINED_GLASS_PANE);
@@ -97,6 +97,7 @@ public class command implements CommandExecutor {
             ItemMeta itemMeta2 = menu2.getItemMeta();
             ItemMeta itemMeta3 = menu3.getItemMeta();
             ItemMeta itemMeta4 = menu4.getItemMeta();
+            if (itemMeta1 == null || itemMeta2 == null || itemMeta3 == null || itemMeta4 == null) return true;
             itemMeta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&aSHOPを開く"));
             itemMeta2.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&cSHOPを閉じる"));
             itemMeta3.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&eSHOP注意点"));

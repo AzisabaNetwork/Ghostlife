@@ -1,9 +1,7 @@
 package com.github.sirokuri_.ghostlife;
 
-import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import net.milkbowl.vault.permission.Permission;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,19 +10,19 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.*;
-import java.util.List;
 import java.util.logging.Logger;
 
 public final class ghostlife extends JavaPlugin implements Listener {
 
     private static final Logger log = Logger.getLogger("Minecraft");
+    public InventoryHolder holder1;
+    public InventoryHolder holder2;
     private static Economy econ = null;
-    private static Permission perms = null;
-    private static Chat chat = null;
 
     @Override
     public void onEnable() {
@@ -35,11 +33,6 @@ public final class ghostlife extends JavaPlugin implements Listener {
         getCommand("sellmmgui").setExecutor(new command(this));
         getCommand("smg").setExecutor(new command(this));
         saveDefaultConfig();
-        if (!setupEconomy() ) {
-            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
     }
 
     private boolean setupEconomy() {
@@ -50,7 +43,7 @@ public final class ghostlife extends JavaPlugin implements Listener {
         if (rsp == null) {
             return false;
         }
-        econ = rsp.getProvider();
+        Economy econ = rsp.getProvider();
         return econ != null;
     }
 
@@ -62,9 +55,31 @@ public final class ghostlife extends JavaPlugin implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         Player player = (Player) e.getView().getPlayer();
+        Inventory inventory = e.getClickedInventory();
         ItemStack slot = e.getCurrentItem();
         if (slot == null) return;
-        if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', "&cSELLMMITEM MENU"))) {
+        if (inventory == null) return;
+        InventoryHolder inventoryHolder = inventory.getHolder();
+        if(inventoryHolder == holder1){
+            if (slot.getType() == Material.GREEN_STAINED_GLASS_PANE) {
+                if (slot.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&aSHOPを開く"))) {
+                    Inventory mirror = Bukkit.createInventory(holder2, 54, "§cSELLMMITEM SHOP");
+                    Location loc = player.getLocation();
+                    player.playSound(loc,Sound.BLOCK_CHEST_OPEN, 2, 1);
+                    player.openInventory(mirror);
+                }
+            }else if (slot.getType() == Material.RED_STAINED_GLASS_PANE) {
+                if (slot.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&cSHOPを閉じる"))) {
+                    player.closeInventory();
+                    Location loc = player.getLocation();
+                    player.playSound(loc, Sound.BLOCK_CHEST_CLOSE, 2, 1);
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cSELLMMSHOP&fを閉じました"));
+                }
+            } else {
+                e.setCancelled(true);
+            }
+        }
+        /*if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', "&cSELLMMITEM MENU"))) {
             if (slot.getType() == Material.GREEN_STAINED_GLASS_PANE) {
                 if (slot.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&aSHOPを開く"))) {
                     Inventory mirror = Bukkit.createInventory(null, 54, "§cSELLMMITEM SHOP");
@@ -82,15 +97,16 @@ public final class ghostlife extends JavaPlugin implements Listener {
             } else {
                 e.setCancelled(true);
             }
-        }
+        }*/
     }
 
     @EventHandler
-    public void onClose(InventoryCloseEvent e){
-        Inventory backpack = e.getInventory();
+    private void inventoryCloseEvent(InventoryCloseEvent e) {
         Player player = (Player) e.getPlayer();
-        if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', "&cSELLMMITEM SHOP"))) {
-            ItemStack[] contents = backpack.getContents();
+        InventoryHolder inventoryHolder = e.getInventory().getHolder();
+        if(inventoryHolder == holder1) return;
+        if(inventoryHolder == holder2){
+            ItemStack[] contents = holder2.getInventory().getContents();
             List<String> itemDisplayNameList = new ArrayList<>();
             double totalMoney = 0;
             for (String key : getConfig().getConfigurationSection("mmitem").getKeys(false)) {
@@ -110,13 +126,15 @@ public final class ghostlife extends JavaPlugin implements Listener {
                 }
             }
             Location loc = player.getLocation();
-            player.playSound(loc,Sound.ENTITY_PLAYER_LEVELUP, 2, 1);
+            player.playSound(loc, Sound.ENTITY_PLAYER_LEVELUP, 2, 1);
             EconomyResponse r = econ.depositPlayer(player, totalMoney);
             if(r.transactionSuccess()) {
                 player.sendMessage(String.format("[smg]\n\n今回の売却額 : %s\n現在の所持金 : %s", econ.format(r.amount), econ.format(r.balance)));
             } else {
                 player.sendMessage(String.format("An error occured: %s", r.errorMessage));
             }
+            /*if (e.getView().getTitle().equals(ChatColor.translateAlternateColorCodes('&', "&cSELLMMITEM SHOP"))) {
+            }*/
         }
     }
 
