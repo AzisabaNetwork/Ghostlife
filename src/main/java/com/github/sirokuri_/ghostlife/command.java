@@ -88,7 +88,7 @@ public class command implements CommandExecutor {
         }
 
         if (cmd.getName().equalsIgnoreCase("sellmmgui") || cmd.getName().equalsIgnoreCase("smg")) {
-            Inventory mirror = Bukkit.createInventory(plugin.holder1, 9, "§cSELLMMITEM MENU");
+            Inventory mirror = Bukkit.createInventory(new MyHolder("holder1"), 9, "§cSELLMMITEM MENU");
             ItemStack menu1 = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
             ItemStack menu2 = new ItemStack(Material.RED_STAINED_GLASS_PANE);
             ItemStack menu3 = new ItemStack(Material.YELLOW_STAINED_GLASS_PANE);
