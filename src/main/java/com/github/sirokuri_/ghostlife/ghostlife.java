@@ -1,9 +1,8 @@
 package com.github.sirokuri_.ghostlife;
 
-import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import net.milkbowl.vault.permission.Permission;
+
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,11 +51,6 @@ public final class ghostlife extends JavaPlugin implements Listener {
         return econ != null;
     }
 
-
-    public static Economy getEconomy() {
-        return econ;
-    }
-
     @Override
     public void onDisable() {
         // Plugin shutdown logic
@@ -98,7 +92,6 @@ public final class ghostlife extends JavaPlugin implements Listener {
         if(inventoryHolder == null) return;
         if(!(inventoryHolder instanceof MyHolder)) return;
         MyHolder holder = (MyHolder) inventoryHolder;
-        if(holder.tags.get(0).equals("holder1")) return;
         if(holder.tags.get(0).equals("holder2")){
             ItemStack[] contents = inventory.getContents();
             List<String> itemDisplayNameList = new ArrayList<>();
@@ -121,12 +114,14 @@ public final class ghostlife extends JavaPlugin implements Listener {
             }
             Location loc = player.getLocation();
             player.playSound(loc, Sound.ENTITY_PLAYER_LEVELUP, 2, 1);
-            EconomyResponse r = econ.depositPlayer(player, totalMoney);
-            if(r.transactionSuccess()) {
-                player.sendMessage(String.format("[smg]\n\n今回の売却額 : %s\n現在の所持金 : %s", econ.format(r.amount), econ.format(r.balance)));
+            /*EconomyResponse response = econ.depositPlayer(player, totalMoney);
+            if(response.transactionSuccess()) {
+                player.sendMessage(String.format("[smg]\n\n今回の売却額 : %s\n現在の所持金 : %s", econ.format(response.amount), econ.format(response.balance)));
             } else {
-                player.sendMessage(String.format("An error occured: %s", r.errorMessage));
-            }
+                player.sendMessage(String.format("An error occured: %s", response.errorMessage));
+            }*/
+        }else {
+            return;
         }
     }
 
