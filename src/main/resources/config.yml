@@ -1,4 +1,3 @@
-cooltime: 60
 mmitem:
   yukiti_ticket:
     itemdisplay: "&3一万円"
@@ -12,15 +11,6 @@ mmitem:
   noguti_ticket:
     itemdisplay: "&3千円"
     sellprice: 1000
-  kouka:
-    itemdisplay: "&6&l硬貨"
-    sellprice: 7
-  cave_shard:
-    itemdisplay: "&7洞窟の欠片"
-    sellprice: 5
-  kokuyouseki:
-    itemdisplay: "&0&l黒曜石&f"
-    sellprice: 10
   assyukuwheat:
     itemdisplay: "圧縮小麦チケット"
     sellprice: 1920
@@ -30,3 +20,13 @@ mmitem:
   assyukucarrot:
     itemdisplay: "圧縮人参チケット"
     sellprice: 1920
+  assyukuspruce:
+    itemdisplay: "圧縮松の木チケット"
+    sellprice: 640
+SellItemDisplay: "----------------------------\n[smg 販売リスト]
+\n&3一万円&r,&3五千円&r
+\n&3二千円&r,&3千円&r
+\n&6&l硬貨&r,&7洞窟の欠片&r
+\n&0&l黒曜石&r,圧縮小麦チケット
+\n圧縮ポテトチケット,圧縮人参チケット
+\n----------------------------"
