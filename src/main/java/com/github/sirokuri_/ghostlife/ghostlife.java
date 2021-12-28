@@ -1,7 +1,9 @@
 package com.github.sirokuri_.ghostlife;
 
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
+import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -22,6 +24,8 @@ public final class ghostlife extends JavaPlugin implements Listener {
 
     private static final Logger log = Logger.getLogger("Minecraft");
     private static Economy econ = null;
+    private static Permission perms = null;
+    private static Chat chat = null;
 
     @Override
     public void onEnable() {
@@ -47,8 +51,8 @@ public final class ghostlife extends JavaPlugin implements Listener {
         if (rsp == null) {
             return false;
         }
-        Economy econ = rsp.getProvider();
-        return econ != null;
+        econ = rsp.getProvider();
+        return true;
     }
 
     @Override
@@ -78,6 +82,12 @@ public final class ghostlife extends JavaPlugin implements Listener {
                 Location loc = player.getLocation();
                 player.playSound(loc, Sound.BLOCK_CHEST_CLOSE, 2, 1);
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cSELLMMSHOP&fを閉じました"));
+            }
+        }else if(slot.getType() == Material.BLACK_STAINED_GLASS_PANE){
+            if(slot.getItemMeta().getDisplayName().equals(ChatColor.translateAlternateColorCodes('&', "&8売却可能アイテム一覧を表示する"))){
+                player.closeInventory();
+                String sellItemDisplay = getConfig().getString("SellItemDisplay");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&',"" + sellItemDisplay));
             }
         } else {
             e.setCancelled(true);
@@ -114,12 +124,12 @@ public final class ghostlife extends JavaPlugin implements Listener {
             }
             Location loc = player.getLocation();
             player.playSound(loc, Sound.ENTITY_PLAYER_LEVELUP, 2, 1);
-            /*EconomyResponse response = econ.depositPlayer(player, totalMoney);
-            if(response.transactionSuccess()) {
-                player.sendMessage(String.format("[smg]\n\n今回の売却額 : %s\n現在の所持金 : %s", econ.format(response.amount), econ.format(response.balance)));
+            EconomyResponse r = econ.depositPlayer(player, totalMoney);
+            if (r.transactionSuccess()) {
+                player.sendMessage(String.format("[smg]\n\n今回の売却額 : %s\n現在の所持金 : %s", econ.format(r.amount), econ.format(r.balance)));
             } else {
-                player.sendMessage(String.format("An error occured: %s", response.errorMessage));
-            }*/
+                player.sendMessage(String.format("An error occured: %s", r.errorMessage));
+            }
         }else {
             return;
         }

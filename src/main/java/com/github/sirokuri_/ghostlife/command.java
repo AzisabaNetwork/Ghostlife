@@ -101,7 +101,7 @@ public class command implements CommandExecutor {
             itemMeta1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&aSHOPを開く"));
             itemMeta2.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&cSHOPを閉じる"));
             itemMeta3.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&eSHOP注意点"));
-            itemMeta4.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8売却可能アイテム一覧をみる"));
+            itemMeta4.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8売却可能アイテム一覧を表示する"));
             List<String> lore3 = new ArrayList<String>();
             lore3.add(ChatColor.translateAlternateColorCodes('&', "&dSHOPのインベントリに"));
             lore3.add(ChatColor.translateAlternateColorCodes('&', "&d指定アイテム以外を入れてしまうと"));
@@ -109,11 +109,13 @@ public class command implements CommandExecutor {
             lore3.add(ChatColor.translateAlternateColorCodes('&', "&d消えたアイテムに関しては&c補填対象外&dです"));
             itemMeta3.setLore(lore3);
             List<String> lore4 = new ArrayList<String>();
-            lore4.add(ChatColor.translateAlternateColorCodes('&', "&d売却可能アイテムは"));
-            lore4.add(ChatColor.translateAlternateColorCodes('&', "&3一万円&f,&3五千円&f"));
-            lore4.add(ChatColor.translateAlternateColorCodes('&', "&3二千円&f,&3千円"));
-            lore4.add(ChatColor.translateAlternateColorCodes('&', "&f圧縮小麦チケット,圧縮ポテトチケット,圧縮人参チケット"));
-            lore4.add(ChatColor.translateAlternateColorCodes('&', "&f圧縮松の木チケット"));
+            List<String> itemDisplay = new ArrayList<String>();
+            for (String key : plugin.getConfig().getConfigurationSection("mmitem").getKeys(false)) {
+                String ItemDisplayName = plugin.getConfig().getString("mmitem." + key + ".itemdisplay");
+                itemDisplay.add(ItemDisplayName);
+            }
+            lore4.add(ChatColor.translateAlternateColorCodes('&', "&d売却可能アイテム一覧は"));
+            lore4.add(ChatColor.translateAlternateColorCodes('&', "クリックで閲覧できます"));
             itemMeta4.setLore(lore4);
             menu1.setItemMeta(itemMeta1);
             menu2.setItemMeta(itemMeta2);
