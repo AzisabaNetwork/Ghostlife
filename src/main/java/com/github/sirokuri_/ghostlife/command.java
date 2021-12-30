@@ -1,5 +1,7 @@
-package com.github.sirokuri_.ghostlife;
+package com.github.sirokuri_.ghostlife.command;
 
+import com.github.sirokuri_.ghostlife.ghostlife;
+import com.github.sirokuri_.ghostlife.inventoryHolder.MyHolder;
 import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
