@@ -7,6 +7,7 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -31,7 +32,6 @@ public final class ghostlife extends JavaPlugin{
         }
         getCommand("ghostlife").setExecutor(new command(this));
         getCommand("playerskullgive").setExecutor(new command(this));
-        getCommand("adddamege").setExecutor(new command(this));
         getCommand("sellmmgui").setExecutor(new command(this));
         getCommand("smg").setExecutor(new command(this));
         Bukkit.getPluginManager().registerEvents(new sellMMgui(this), this);
@@ -74,5 +74,24 @@ public final class ghostlife extends JavaPlugin{
                 }
             }
         }
+    }
+
+    private FileConfiguration config = null;
+
+    public FileConfiguration config(){
+        load();
+        return config;
+    }
+
+    public void load() {
+        saveDefaultConfig();
+        if (config != null) {
+            reload();
+        }
+        config = getConfig();
+    }
+
+    public void reload() {
+        reloadConfig();
     }
 }

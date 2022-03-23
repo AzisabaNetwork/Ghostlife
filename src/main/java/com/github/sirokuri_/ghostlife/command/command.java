@@ -51,39 +51,6 @@ public class command implements CommandExecutor {
             return true;
         }
 
-        if (cmd.getName().equalsIgnoreCase("adddamege")) {
-            if (sender.hasPermission("GhostLifeCommand.permission.Admin")) {
-                if (args.length == 0) {
-                    sender.sendMessage("コマンドを正しく入力してください");
-                return true;
-                } else {
-                int damage = 0;
-                    try {
-                        damage = Integer.parseInt(args[0]);
-                    } catch (NumberFormatException ex) {
-                        sender.sendMessage("ダメージ量は数値で指定してください");
-                    }
-                    Player target = null;
-                    if (args.length == 1) {
-                        if (!(sender instanceof Player)) {
-                            sender.sendMessage("ゲーム内から実行してください");
-                            return true;
-                        }
-                        target = (Player) sender;
-                    } else {
-                        Player tar = Bukkit.getPlayer(args[1]);
-                        if (tar == null || !tar.isOnline()) {
-                            sender.sendMessage("指定されたプレイヤーはオンラインではありません");
-                            return true;
-                        }
-                        target = tar;
-                    }
-                    target.damage(damage);
-                }
-            }
-            return true;
-        }
-
         if (cmd.getName().equalsIgnoreCase("sellmmgui") || cmd.getName().equalsIgnoreCase("smg")) {
             Inventory mirror = Bukkit.createInventory(new MyHolder("holder1"), 9, "§cSELLMMITEM MENU");
             ItemStack menu1 = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
