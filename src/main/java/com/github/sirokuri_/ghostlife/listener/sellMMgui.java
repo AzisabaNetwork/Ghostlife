@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class sellMMgui implements Listener {
+
     public final ghostlife plugin;
 
     public sellMMgui(ghostlife ghostlife){
@@ -92,9 +93,9 @@ public class sellMMgui implements Listener {
             ItemStack[] contents = inventory.getContents();
             List<String> itemDisplayNameList = new ArrayList<>();
             double totalMoney = 0;
-            for (String key : plugin.getConfig().getConfigurationSection("mmitem").getKeys(false)) {
-                int moneyamount = plugin.getConfig().getInt("mmitem." + key + ".sellprice");
-                String ItemDisplayName = plugin.getConfig().getString("mmitem." + key + ".itemdisplay");
+            for (String key : plugin.config().getConfigurationSection("mmitem").getKeys(false)) {
+                int moneyamount = plugin.config().getInt("mmitem." + key + ".sellprice");
+                String ItemDisplayName = plugin.config().getString("mmitem." + key + ".itemdisplay");
                 for (int i = 0; i < 54; i++) {
                     ItemStack content = contents[i];
                     if (content == null) {
