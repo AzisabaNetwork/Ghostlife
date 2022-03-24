@@ -32,7 +32,7 @@ public class command implements CommandExecutor {
             if (args[0].equalsIgnoreCase("reload")) {
                 //OP以外起動しないように設定
                 if (sender.hasPermission("GhostLifeCommand.permission.Admin")) {
-                    plugin.reloadConfig();
+                    plugin.reload();
                     p.sendMessage("configリロードしました");
                 }
                 return true;
